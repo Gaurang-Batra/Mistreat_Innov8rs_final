@@ -66,6 +66,8 @@ class BillViewController: UIViewController, UITableViewDelegate, UITableViewData
     var groupid : Int?
 
     private let users = UserDataModel.shared.getAllUsers()
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()

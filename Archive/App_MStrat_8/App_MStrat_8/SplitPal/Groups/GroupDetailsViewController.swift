@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class GroupDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var balances: [ExpenseSplitForm] = []
@@ -33,6 +34,7 @@ class GroupDetailViewController: UIViewController, UITableViewDataSource, UITabl
            filterBalances()
            tableView.reloadData()
     }
+    private var expenses: [ExpenseSplitForm] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,15 +89,38 @@ class GroupDetailViewController: UIViewController, UITableViewDataSource, UITabl
         SegmentedControllerforgroup.addTarget(self, action: #selector(segmentControlChanged), for: .valueChanged)
         
         
-//        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView), name: .newexpenseaddedingroup, object: nil)
-//        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView), name: .newExpenseAddedInGroup, object: nil)
+
+
+        
         updateExpenseSum()
 
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // Reload balances and filter them
+        balances = SplitExpenseDataModel.shared.getExpenseSplits(forGroup: groupItem?.id ?? 0)
+        filterBalances()
+        
+        // Reload the table view
+        tableView.reloadData()
+
+        // Update the total expense sum
+        updateExpenseSum()
+
+        // Optionally update the segmented control state if needed
+        updateSeparatorStyle()
+    }
+
 
     @objc func reloadTableView() {
         print("Reloading table view...")
+        balances = SplitExpenseDataModel.shared.getExpenseSplits(forGroup: groupItem?.id ?? 0)
+        filterBalances()
         tableView.reloadData()
+        updateExpenseSum()
     }
 
     // Ensure the method is marked with @objc so it can be used as a selector
