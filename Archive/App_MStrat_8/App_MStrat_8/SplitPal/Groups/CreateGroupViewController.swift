@@ -49,7 +49,7 @@ class CreateGroupViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchUsers.count
+        return searchUsers.count - 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -91,7 +91,7 @@ class CreateGroupViewController: UIViewController, UITableViewDelegate, UITableV
         }
         
         // Highlight the clicked button
-        sender.tintColor = .systemBlue
+        sender.tintColor = .systemGray
         sender.backgroundColor = .lightGray
         selectedImage = sender.image(for: .normal)
         sender.isEnabled = true

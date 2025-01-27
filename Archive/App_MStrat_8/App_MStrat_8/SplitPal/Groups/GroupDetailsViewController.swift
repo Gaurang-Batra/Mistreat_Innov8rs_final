@@ -267,7 +267,7 @@ class GroupDetailViewController: UIViewController, UITableViewDataSource, UITabl
         return 50
     }
     
-    func navigateToSettlement(with amount: Double) {
+    func navigateToSettlement(with amount: Double, expense: ExpenseSplitForm?) {
         performSegue(withIdentifier: "Settlement", sender: amount)
     }
     
@@ -277,12 +277,13 @@ class GroupDetailViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Settlement" {
-            if let destinationVC = segue.destination as? SettlementViewController,
-               let amount = sender as? Double {
-                print("send amount \(amount)")
-                destinationVC.labelText = amount
+                    if let destinationVC = segue.destination as? SettlementViewController,
+                       let selectedExpense = sender as? ExpenseSplitForm {
+                        destinationVC.labelText = selectedExpense.totalAmount
+                        destinationVC.selectedExpense = selectedExpense
+                        destinationVC.delegate = self  // Set the delegate to self
+                    }
             }
-        }
         else if segue.identifier == "ExpenseSplit" {
             if let navigationController = segue.destination as? UINavigationController,
                let destinationVC = navigationController.topViewController as? BillViewController {
